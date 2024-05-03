@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  line:
+    build: .
+    container_name: line_fastapi_container
+    environment:
+      MONGODB_HOST: "line_mongodb_container"
+      MONGODB_DATABASE: "conversationdb"
+      MONGODB_COLLECTION: "learning_companion"
+      LINE_ACCESS_TOKEN: "BKYTlfBJNx9i/F8mvyem/ekA8xgS7Qck/4P1L9+8Xeacm3Ko9B/MT7+H+QubNoCLgpjBqhZ5+/u3Qyys5QVkIOFCnHrS4H+99EwS5UtU3ts9wmrAqr1tsZ7RBaDcJ3mrv/vT3aYXwZP3tM0IKdRDdwdB04t89/1O/w1cDnyilFU="
+      LINE_CHANNEL_SECRET: "714b62fc23d1861bcceba15c0c9f2894"
+      GPT_API_URL: "http://ml.hsueh.tw/callapi/"
+      
+    volumes:
+      - ./main.py:/app/main.py
+    ports:
+      - "25000:25000"
+    networks:
+      - line_agent_network
+
+  mongodb:
+    image: mongo
+    container_name: line_mongodb_container
+    ports:
+      - "27018:27017"
+    networks:
+      - line_agent_network
+
+networks:
+  line_agent_network:
